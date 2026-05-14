@@ -122,11 +122,24 @@ class WaypointController(object):
             target_yaw = math.atan2(dy, dx)
             angle_error = self.angle_wrap(target_yaw - yaw)
 
-            # If badly misaligned, rotate first instead of driving forward.
-            if abs(angle_error) > 0.45:
+            # Rotate in place before driving if heading error is large.
+            if abs(angle_error) > 0.25:
                 linear = 0.0
+            elif is_final:
+                # Final waypoint: slow down proportionally to distance so the
+                # robot stops cleanly at the goal rather than overshooting.
+                heading_factor = 1.0 - min(1.0, abs(angle_error) / 0.25)
+                linear = self.clamp(
+                    self.k_linear * dist * heading_factor,
+                    0.0,
+                    self.max_linear
+                )
             else:
-                linear = self.clamp(self.k_linear * dist, 0.0, self.max_linear)
+                # Intermediate waypoints: cruise at full speed.
+                # No need to decelerate since we just pass through, not stop.
+                # Still feather speed with heading error to avoid drifting wide.
+                heading_factor = 1.0 - min(1.0, abs(angle_error) / 0.25)
+                linear = self.max_linear * heading_factor
 
             angular = self.clamp(
                 self.k_angular * angle_error,
@@ -151,7 +164,9 @@ class WaypointController(object):
             rospy.logwarn("[CTRL] Empty path.")
             return False
 
-        path = self.resample_path(world_path, max_step=0.45)
+        # Smaller step = robot tracks the planned path more tightly,
+        # which prevents it from cutting through inflated obstacles at corners.
+        path = self.resample_path(world_path, max_step=0.25)
 
         rospy.loginfo("[CTRL] Following %d waypoints after resampling." % len(path))
 

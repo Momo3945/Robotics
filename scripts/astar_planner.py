@@ -70,10 +70,14 @@ class AStarPlanner(object):
 
         # Extra safety clearance for the TurtleBot.
         # Map resolution is 0.05 m/pixel, so:
-        # 5 pixels = 25 cm, 6 pixels = 30 cm, 7 pixels = 35 cm.
-        SAFETY_RADIUS_PIXELS = 7
+        # 5 pixels = 25 cm, 8 pixels = 40 cm, 10 pixels = 50 cm.
+        # Increased from 7.5 to 10 to keep the path centre-line further from
+        # walls, especially around tight corners.  The kernel size must be an
+        # odd integer — passing a float to getStructuringElement silently
+        # produces an incorrect kernel.
+        SAFETY_RADIUS_PIXELS = 10
+        kernel_size = int(2 * SAFETY_RADIUS_PIXELS + 1)   # must be int + odd
 
-        kernel_size = 2 * SAFETY_RADIUS_PIXELS + 1
         kernel = cv2.getStructuringElement(
             cv2.MORPH_ELLIPSE,
             (kernel_size, kernel_size)

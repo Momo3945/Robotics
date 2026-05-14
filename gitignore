@@ -1,0 +1,16 @@
+*.pyc
+*.pyo
+__pycache__/
+
+build/
+devel/
+install/
+*.orig
+
+docs/screenshots/
+docs/report_figures/
+
+
+.DS_Store
+Thumbs.db
+desktop.ini
