@@ -11,11 +11,7 @@ import cv2
 import numpy as np
 
 
-# ------------------------------------------------------------
-# Package-relative paths
-# This assumes this file is:
-# robot_assignment_ws/src/surveillance_bot/scripts/astar_planner.py
-# ------------------------------------------------------------
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PACKAGE_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
 
@@ -43,7 +39,7 @@ class AStarPlanner(object):
 
         image_path = self.map_info["image"]
 
-        # If image path in YAML is relative, resolve it relative to the YAML folder.
+        #If image path in YAML is relative, resolve it relative to the YAML folder.
         if not os.path.isabs(image_path):
             image_path = os.path.join(os.path.dirname(self.yaml_path), image_path)
 
@@ -83,7 +79,7 @@ class AStarPlanner(object):
             (kernel_size, kernel_size)
         )
 
-        # Erode free space, which is equivalent to inflating obstacles.
+        #Erode free space, which is equivalent to inflating obstacles
         safe_free = cv2.erode(
             raw_free.astype(np.uint8),
             kernel,

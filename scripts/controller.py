@@ -164,13 +164,13 @@ class WaypointController(object):
             rospy.logwarn("[CTRL] Empty path.")
             return False
 
-        # Smaller step = robot tracks the planned path more tightly,
-        # which prevents it from cutting through inflated obstacles at corners.
+        #Smaller step = robot tracks the planned path more tightly,
+        # which prevents it from cutting through inflated obstacles at corners
         path = self.resample_path(world_path, max_step=0.25)
 
         rospy.loginfo("[CTRL] Following %d waypoints after resampling." % len(path))
 
-        # Skip the first point if it is basically the current robot position.
+        # Skip the first point if it is basically the current robot position
         start_index = 0
         robot_x, robot_y, _ = self.get_pose()
         first_x, first_y = path[0]

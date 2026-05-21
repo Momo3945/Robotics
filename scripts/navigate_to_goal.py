@@ -65,7 +65,7 @@ def main():
             # simplify=True uses line-of-sight to merge collinear/near-collinear
             # cells into fewer longer segments.  This pulls the path away from the
             # inflated obstacle boundary at corners instead of hugging it
-            # cell-by-cell, which is what causes the robot to scrape walls.
+            # cell-by-cell, which is what causes the robot to scrape walls.bugfix
             world_path, cell_path = planner.plan_world(
                 start_x, start_y,
                 goal_x, goal_y,

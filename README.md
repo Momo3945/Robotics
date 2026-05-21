@@ -1,4 +1,3 @@
-````markdown
 # SurveillanceBot Robotics Assignment
 
 This folder contains our Honours SurveillanceBot implementation. The robot maps the environment, uses a processed occupancy grid for A* path planning, and navigates to user-entered `(x, y)` coordinates using a proportional waypoint controller.
