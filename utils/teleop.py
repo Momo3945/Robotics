@@ -24,7 +24,7 @@ import os
 import subprocess
 import time
 from geometry_msgs.msg import Twist
-
+import math
 CMD_TOPIC     = '/cmd_vel_mux/input/navi'
 MAP_PATH      = os.path.expanduser('~/maps/surveillance_map')
 FORWARD_SPEED = 0.30  # m/s

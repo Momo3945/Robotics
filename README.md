@@ -4,17 +4,50 @@ This folder contains our Honours SurveillanceBot implementation. The robot maps 
 
 ---
 
-## 1. Where to place this folder
-
-Place the `surveillance_bot` folder inside the `src` directory of the provided robotics workspace:
 ## Python dependencies
 
 This project is intended to run inside the provided ROS Kinetic Docker/Singularity environment.
 
-The custom Python scripts use:
+The custom Python scripts use NumPy, PyYAML, and OpenCV:
 
 ```bash
 pip install numpy PyYAML opencv-python
+```
+
+If running inside the ROS Kinetic Python 2 environment and `opencv-python` gives issues, use the Ubuntu/ROS packages instead:
+
+```bash
+sudo apt-get update
+sudo apt-get install python-numpy python-yaml python-opencv
+```
+
+For Python 3 environments, for example when testing the A* planner outside ROS, use:
+
+```bash
+pip3 install numpy PyYAML opencv-python
+```
+
+The following packages are provided by ROS and should not be installed with `pip`:
+
+```text
+rospy
+geometry_msgs
+gazebo_msgs
+map_server
+gmapping
+```
+
+The remaining imports are Python standard-library modules and require no installation:
+
+```text
+os, sys, math, heapq, argparse, time, glob, subprocess, tty, termios
+```
+
+---
+
+## 1. Where to place this folder
+
+Place the `surveillance_bot` folder inside the `src` directory of the provided robotics workspace:
 
 ```text
 robot_assignment_ws/
@@ -25,7 +58,7 @@ robot_assignment_ws/
 │       ├── maps/
 │       ├── docs/
 │       └── utils/
-````
+```
 
 So the final path should be:
 
@@ -122,6 +155,13 @@ scripts/controller.py          Waypoint-following controller
 scripts/navigate_to_goal.py    Main navigation node
 ```
 
+### Utility scripts
+
+```text
+utils/teleop.py                Manual teleoperation and map saving
+utils/crop_maps.py             Crops map/path screenshots for the report
+```
+
 ### Maps
 
 ```text
@@ -166,6 +206,7 @@ Contains cropped images used in the report.
 To test the planner without moving the robot, run from the `scripts` folder:
 
 ```bash
+cd robot_assignment_ws/src/surveillance_bot/scripts
 python astar_planner.py -1.1 1.9 4.2 1.8 --debug-out ../docs/screenshots/test_path.png
 ```
 
@@ -233,9 +274,32 @@ docs/report_figures/
 
 ---
 
-## 9. Some demo coordinates
+## 9. Manual mapping with teleop
 
-Some coordinates that I used during testing:
+To manually drive the robot while mapping, run `teleop.py` from the `utils` folder while the simulator and gmapping are running:
+
+```bash
+cd robot_assignment_ws/src/surveillance_bot
+python utils/teleop.py
+```
+
+Useful controls:
+
+```text
+w       forward
+s       backward
+a/q     turn left
+d/e     turn right
+x/space stop
+m       save map
+ESC     quit
+```
+
+---
+
+## 10. Some demo coordinates
+
+Some coordinates used during testing:
 
 ```text
 0 0
@@ -245,6 +309,3 @@ Some coordinates that I used during testing:
 3 4
 4.2 1.8
 ```
----
-
-
