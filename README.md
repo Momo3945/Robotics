@@ -7,6 +7,14 @@ This folder contains our Honours SurveillanceBot implementation. The robot maps 
 ## 1. Where to place this folder
 
 Place the `surveillance_bot` folder inside the `src` directory of the provided robotics workspace:
+## Python dependencies
+
+This project is intended to run inside the provided ROS Kinetic Docker/Singularity environment.
+
+The custom Python scripts use:
+
+```bash
+pip install numpy PyYAML opencv-python
 
 ```text
 robot_assignment_ws/
